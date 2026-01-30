@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resume Submission</title>
+  <style>
+    :root{
+      --bg1:#0b1020; --bg2:#0f1b3d;
+      --card:#0f172a; --card2:#111c33;
+      --text:#e5e7eb; --muted:#94a3b8;
+      --primary:#7c3aed; --primary2:#22c55e;
+      --danger:#ef4444; --ring: rgba(124,58,237,.35);
+      --border: rgba(148,163,184,.18);
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius: 18px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:var(--font); color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,.35), transparent 60%),
+        radial-gradient(900px 500px at 90% 20%, rgba(34,197,94,.25), transparent 55%),
+        radial-gradient(800px 500px at 50% 100%, rgba(59,130,246,.20), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      display:flex; align-items:center; justify-content:center;
+      padding:32px 16px;
+    }
+    .wrap{width: min(980px, 100%); display:grid; grid-template-columns: 1.05fr .95fr; gap: 18px;}
+    @media (max-width: 900px){ .wrap{grid-template-columns:1fr;}}
+    .hero, .card{
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      overflow:hidden;
+    }
+    .hero{padding:24px;}
+    .badge{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 12px; border:1px solid var(--border);
+      border-radius:999px; background:rgba(15,23,42,.55);
+      color:var(--muted); font-size:13px;
+    }
+    .dot{width:8px;height:8px;border-radius:50%; background: linear-gradient(135deg, var(--primary), #60a5fa);}
+    h1{margin:16px 0 8px; font-size: 34px; line-height:1.1;}
+    p{margin:0; color:var(--muted); line-height:1.6;}
+    .features{margin-top:18px; display:grid; gap:10px;}
+    .feat{
+      padding:12px 14px; border:1px solid var(--border);
+      border-radius:14px; background: rgba(15,23,42,.45);
+      display:flex; gap:12px;
+    }
+    .icon{
+      width:34px;height:34px;border-radius:12px;
+      background: rgba(124,58,237,.18);
+      border:1px solid rgba(124,58,237,.28);
+      display:grid; place-items:center; flex:0 0 auto;
+    }
+    .icon svg{width:18px;height:18px; fill:#c4b5fd}
+    .feat b{display:block; font-size:14px; margin-bottom:2px;}
+    .feat span{font-size:13px; color:var(--muted)}
+    .card{padding:22px;}
+    .title{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
+    .title h2{margin:0; font-size:18px;}
+    .hint{font-size:12px; color:var(--muted)}
+    form{display:grid; gap:12px; margin-top:14px;}
+    .row{display:grid; grid-template-columns: 1fr 1fr; gap:12px;}
+    @media (max-width: 520px){ .row{grid-template-columns:1fr;} }
+    label{font-size:12px; color:var(--muted); display:block; margin-bottom:6px;}
+    input, textarea, select{
+      width:100%; padding:12px 12px; border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(15,23,42,.55);
+      color: var(--text);
+      outline:none;
+      transition: box-shadow .15s ease, border-color .15s ease, transform .05s ease;
+    }
+    textarea{min-height:92px; resize:vertical;}
+    input:focus, textarea:focus, select:focus{
+      box-shadow: 0 0 0 6px var(--ring);
+      border-color: rgba(124,58,237,.55);
+    }
+
+    .drop{
+      border: 1px dashed rgba(148,163,184,.35);
+      background: rgba(15,23,42,.45);
+      border-radius: 16px;
+      padding: 16px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+    }
+    .drop.dragover{
+      border-color: rgba(34,197,94,.75);
+      background: rgba(34,197,94,.08);
+      box-shadow: 0 0 0 6px rgba(34,197,94,.18);
+    }
+    .drop-left{display:flex; align-items:center; gap:12px;}
+    .paper{
+      width:40px; height:40px; border-radius: 14px;
+      background: rgba(59,130,246,.16);
+      border: 1px solid rgba(59,130,246,.28);
+      display:grid; place-items:center;
+    }
+    .paper svg{width:20px;height:20px; fill:#93c5fd;}
+    .filemeta{display:flex; flex-direction:column; gap:2px;}
+    .filemeta b{font-size:13px;}
+    .filemeta span{font-size:12px; color:var(--muted);}
+    .btn{
+      cursor:pointer; user-select:none;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(124,58,237,.40);
+      background: rgba(124,58,237,.18);
+      color: #e9d5ff;
+      font-weight:600;
+      transition: transform .05s ease, background .15s ease, border-color .15s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{background: rgba(124,58,237,.24); border-color: rgba(124,58,237,.55);}
+    .btn:active{transform: translateY(1px);}
+    .btn.secondary{
+      border-color: rgba(148,163,184,.25);
+      background: rgba(15,23,42,.25);
+      color: var(--text);
+    }
+
+    .actions{display:flex; gap:10px; align-items:center; justify-content:flex-end; margin-top:6px;}
+    .submit{
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(34,197,94,.45);
+      background: rgba(34,197,94,.18);
+      color:#dcfce7;
+      font-weight:700;
+      display:inline-flex; align-items:center; gap:10px;
+    }
+    .submit[disabled]{opacity:.55; cursor:not-allowed;}
+    .toast{
+      margin-top: 10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,.55);
+      color: var(--muted);
+      display:none;
+    }
+    .toast.ok{display:block; border-color: rgba(34,197,94,.40); color:#dcfce7; background: rgba(34,197,94,.10);}
+    .toast.err{display:block; border-color: rgba(239,68,68,.45); color:#fee2e2; background: rgba(239,68,68,.10);}
+    .small{font-size:12px;color:var(--muted)}
+    .req{color:#fca5a5}
+    .spinner{
+      width:16px; height:16px; border-radius:50%;
+      border: 2px solid rgba(255,255,255,.25);
+      border-top-color: rgba(255,255,255,.85);
+      animation: spin 1s linear infinite;
+      display:none;
+    }
+    .loading .spinner{display:inline-block;}
+    @keyframes spin { to { transform: rotate(360deg);} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="badge"><span class="dot"></span> Resume submission portal</div>
+      <h1>Upload your resume.<br/>We’ll take it from here.</h1>
+      <p>
+        This is a clean, fast, and secure intake form designed to plug directly into n8n.
+        It validates PDFs (<b>max 5MB</b>) before submission.
+      </p>
+
+      <div class="features">
+        <div class="feat">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M3 5a2 2 0 0 1 2-2h5.5a1 1 0 0 1 .7.3l1.5 1.5a1 1 0 0 0 .7.3H19a2 2 0 0 1 2 2v2H3V5Zm0 6h20v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-8Z"/></svg>
+          </div>
+          <div><b>PDF only + size guard</b><span>Blocks wrong file types and anything above 5MB instantly.</span></div>
+        </div>
+        <div class="feat">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7v3h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2h1V9a7 7 0 0 1 7-7Zm-5 10h10V9a5 5 0 0 0-10 0v3Zm5 3a2 2 0 0 0-1 3.732V20h2v-1.268A2 2 0 0 0 12 15Z"/></svg>
+          </div>
+          <div><b>Ready for automation</b><span>Submits multipart/form-data so n8n can capture the PDF as binary.</span></div>
+        </div>
+        <div class="feat">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 1 0 8 8h2A10 10 0 1 1 12 2v2Zm1 1h-2v8l6 3 1-1.732-5-2.268V5Z"/></svg>
+          </div>
+          <div><b>Fast + mobile-friendly</b><span>Responsive layout, drag-drop, and clear feedback to users.</span></div>
+        </div>
+      </div>
+
+      <p class="small" style="margin-top:14px;">
+        Next step later: we’ll connect this to Postgres + ATS scoring + scheduling workflows.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="title">
+        <h2>Submit your details</h2>
+        <span class="hint">PDF &lt; 5MB <span class="req">*</span></span>
+      </div>
+
+      <form id="resumeForm">
+        <div class="row">
+          <div>
+            <label>Full Name <span class="req">*</span></label>
+            <input name="full_name" placeholder="e.g., Nandan Kumar" required />
+          </div>
+          <div>
+            <label>Email <span class="req">*</span></label>
+            <input name="email" type="email" placeholder="e.g., nandan@email.com" required />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Role / Position</label>
+            <input name="role" placeholder="e.g., Backend Engineer" />
+          </div>
+          <div>
+            <label>Phone (optional)</label>
+            <input name="phone" placeholder="+91 9xxxx xxxxx" />
+          </div>
+        </div>
+
+        <div>
+          <label>Message (optional)</label>
+          <textarea name="message" placeholder="Anything you want to add…"></textarea>
+        </div>
+
+        <div id="dropZone" class="drop">
+          <div class="drop-left">
+            <div class="paper">
+              <svg viewBox="0 0 24 24"><path d="M6 2h8l4 4v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm7 1.5V7h3.5L13 3.5ZM7 12h10v2H7v-2Zm0 4h10v2H7v-2Zm0-8h6v2H7V8Z"/></svg>
+            </div>
+            <div class="filemeta">
+              <b id="fileName">Upload resume (PDF)</b>
+              <span id="fileInfo">Drag & drop here or click “Choose PDF”. Max 5MB.</span>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; align-items:center;">
+            <input id="fileInput" name="resume_pdf" type="file" accept="application/pdf" hidden />
+            <button type="button" id="chooseBtn" class="btn">Choose PDF</button>
+            <button type="button" id="clearBtn" class="btn secondary">Clear</button>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="submitBtn" class="submit" type="submit">
+            <span class="spinner"></span>
+            <span>Submit</span>
+          </button>
+        </div>
+
+        <div id="toast" class="toast"></div>
+        <div class="small">
+          By submitting, you confirm the file is a PDF and you consent to be contacted.
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    // 👉 Replace with your n8n webhook URL later
+    const WEBHOOK_URL = "https://YOUR_N8N_PUBLIC_URL/webhook/resume-intake";
+
+    const form = document.getElementById("resumeForm");
+    const fileInput = document.getElementById("fileInput");
+    const chooseBtn = document.getElementById("chooseBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const dropZone = document.getElementById("dropZone");
+    const fileName = document.getElementById("fileName");
+    const fileInfo = document.getElementById("fileInfo");
+    const toast = document.getElementById("toast");
+    const submitBtn = document.getElementById("submitBtn");
+
+    const MAX_BYTES = 5 * 1024 * 1024; // 5MB
+
+    function showToast(type, msg){
+      toast.className = "toast " + (type === "ok" ? "ok" : "err");
+      toast.textContent = msg;
+    }
+
+    function clearToast(){
+      toast.className = "toast";
+      toast.textContent = "";
+    }
+
+    function setFileMeta(file){
+      if (!file){
+        fileName.textContent = "Upload resume (PDF)";
+        fileInfo.textContent = "Drag & drop here or click “Choose PDF”. Max 5MB.";
+        return;
+      }
+      const sizeMB = (file.size / (1024*1024)).toFixed(2);
+      fileName.textContent = file.name;
+      fileInfo.textContent = `${sizeMB} MB • ${file.type || "application/pdf"}`;
+    }
+
+    function validateFile(file){
+      if (!file) return "Please upload a PDF resume.";
+      if (file.type !== "application/pdf") return "Only PDF files are allowed.";
+      if (file.size > MAX_BYTES) return "PDF must be less than 5MB.";
+      return null;
+    }
+
+    chooseBtn.addEventListener("click", () => fileInput.click());
+
+    clearBtn.addEventListener("click", () => {
+      fileInput.value = "";
+      setFileMeta(null);
+      clearToast();
+    });
+
+    fileInput.addEventListener("change", () => {
+      clearToast();
+      const file = fileInput.files?.[0];
+      const err = validateFile(file);
+      if (err){
+        fileInput.value = "";
+        setFileMeta(null);
+        showToast("err", err);
+        return;
+      }
+      setFileMeta(file);
+    });
+
+    // Drag & drop
+    ["dragenter","dragover"].forEach(evt => {
+      dropZone.addEventListener(evt, (e) => {
+        e.preventDefault(); e.stopPropagation();
+        dropZone.classList.add("dragover");
+      });
+    });
+    ["dragleave","drop"].forEach(evt => {
+      dropZone.addEventListener(evt, (e) => {
+        e.preventDefault(); e.stopPropagation();
+        dropZone.classList.remove("dragover");
+      });
+    });
+    dropZone.addEventListener("drop", (e) => {
+      clearToast();
+      const file = e.dataTransfer.files?.[0];
+      const err = validateFile(file);
+      if (err){
+        showToast("err", err);
+        return;
+      }
+      // Set file into input (supported in modern browsers)
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      fileInput.files = dt.files;
+      setFileMeta(file);
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearToast();
+
+      const file = fileInput.files?.[0];
+      const err = validateFile(file);
+      if (err){
+        showToast("err", err);
+        return;
+      }
+
+      // Prepare multipart/form-data
+      const fd = new FormData(form);
+
+      // Basic sanity checks
+      const fullName = (fd.get("full_name") || "").toString().trim();
+      const email = (fd.get("email") || "").toString().trim();
+      if (!fullName || !email){
+        showToast("err", "Please fill required fields (name and email).");
+        return;
+      }
+
+      // Submit
+      submitBtn.disabled = true;
+      submitBtn.classList.add("loading");
+      try {
+        const res = await fetch(WEBHOOK_URL, { method: "POST", body: fd });
+        if (!res.ok){
+          const txt = await res.text().catch(() => "");
+          throw new Error(`Upload failed (${res.status}). ${txt}`.slice(0, 220));
+        }
+
+        // Reset UI
+        form.reset();
+        fileInput.value = "";
+        setFileMeta(null);
+        showToast("ok", "Submitted successfully! We’ll contact you soon.");
+      } catch (error){
+        showToast("err", error.message || "Something went wrong.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove("loading");
+      }
+    });
+
+    // Init
+    setFileMeta(null);
+  </script>
+</body>
+</html>
