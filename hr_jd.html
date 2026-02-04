@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HR | Job Description Submission</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#0f1a2d;
+      --card2:#0d1729;
+      --border:rgba(255,255,255,.10);
+      --muted:rgba(255,255,255,.65);
+      --text:rgba(255,255,255,.92);
+      --accent:#7c3aed; /* violet */
+      --accent2:#22c55e; /* green */
+      --warn:#f59e0b;
+      --danger:#ef4444;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 20% 10%, rgba(124,58,237,.35), transparent 55%),
+                  radial-gradient(900px 500px at 80% 15%, rgba(34,197,94,.22), transparent 55%),
+                  radial-gradient(800px 500px at 50% 90%, rgba(59,130,246,.18), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+      padding: 28px 16px 64px;
+    }
+
+    .container{
+      max-width:1100px;
+      margin:0 auto;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+      margin-bottom:18px;
+    }
+
+    .title{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .title h1{
+      margin:0;
+      font-size: clamp(22px, 2.6vw, 34px);
+      letter-spacing:.2px;
+      line-height:1.1;
+    }
+    .title p{
+      margin:0;
+      color:var(--muted);
+      max-width: 70ch;
+      font-size:14px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      font-size:13px;
+      color: rgba(255,255,255,.84);
+      white-space:nowrap;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:999px;
+      background: linear-gradient(180deg, var(--accent), #4f46e5);
+      box-shadow: 0 0 0 4px rgba(124,58,237,.16);
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    @media (max-width: 920px){
+      .layout{grid-template-columns:1fr}
+      .badge{align-self:flex-start}
+    }
+
+    .card{
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .cardHeader{
+      padding:16px 16px 12px;
+      border-bottom:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+    }
+
+    .cardHeader h2{
+      margin:0;
+      font-size:16px;
+      letter-spacing:.2px;
+    }
+    .cardHeader .sub{
+      margin-top:4px;
+      font-size:12.5px;
+      color:var(--muted);
+    }
+
+    .cardBody{
+      padding:16px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    @media (max-width: 620px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    label{
+      font-size:12.5px;
+      color:rgba(255,255,255,.78);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .req{
+      color:rgba(255,255,255,.6);
+      font-size:11.5px;
+    }
+
+    input, select, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(8, 14, 26, .65);
+      color:var(--text);
+      outline:none;
+      transition: .15s ease;
+    }
+
+    input::placeholder, textarea::placeholder{
+      color: rgba(255,255,255,.38);
+    }
+
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(124,58,237,.65);
+      box-shadow: 0 0 0 4px rgba(124,58,237,.18);
+    }
+
+    textarea{min-height:110px; resize:vertical; line-height:1.4}
+
+    .help{
+      font-size:12px;
+      color: var(--muted);
+      margin-top: 2px;
+      line-height:1.35;
+    }
+
+    .pillRow{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+    .pill{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:12px;
+      color:rgba(255,255,255,.82);
+    }
+
+    .split{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width:620px){ .split{grid-template-columns:1fr} }
+
+    .section{
+      padding:14px 0;
+      border-top:1px dashed rgba(255,255,255,.14);
+      margin-top:14px;
+    }
+    .section:first-child{ border-top:0; margin-top:0; padding-top:0; }
+
+    .counter{
+      font-size:11.5px;
+      color: rgba(255,255,255,.55);
+    }
+
+    .uploadBox{
+      border:1px dashed rgba(255,255,255,.18);
+      background: rgba(255,255,255,.04);
+      border-radius: 14px;
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .uploadRow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .fileMeta{
+      font-size:12px;
+      color:var(--muted);
+    }
+    .status{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      font-size:12.5px;
+      color: rgba(255,255,255,.84);
+      display:none;
+    }
+    .status.ok{
+      display:block;
+      border-color: rgba(34,197,94,.35);
+      background: rgba(34,197,94,.10);
+    }
+    .status.err{
+      display:block;
+      border-color: rgba(239,68,68,.35);
+      background: rgba(239,68,68,.10);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      align-items:center;
+      margin-top: 14px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      cursor:pointer;
+      border:none;
+      border-radius: 14px;
+      padding:12px 14px;
+      font-weight:600;
+      letter-spacing:.2px;
+      transition: .15s ease;
+    }
+    .btnPrimary{
+      background: linear-gradient(180deg, rgba(124,58,237,1), rgba(79,70,229,1));
+      color:white;
+      box-shadow: 0 10px 30px rgba(124,58,237,.35);
+    }
+    .btnPrimary:hover{ transform: translateY(-1px); filter:brightness(1.05); }
+    .btnGhost{
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.86);
+    }
+    .btnGhost:hover{ transform: translateY(-1px); }
+
+    .note{
+      font-size:12px;
+      color: rgba(255,255,255,.62);
+      margin-right:auto;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .note .i{
+      width:18px;height:18px;border-radius:999px;
+      display:inline-flex; align-items:center; justify-content:center;
+      background: rgba(245,158,11,.16);
+      border:1px solid rgba(245,158,11,.35);
+      color: rgba(255,255,255,.9);
+      font-size:12px;
+    }
+
+    /* Instructions panel */
+    .guide ul{
+      margin:10px 0 0 18px;
+      padding:0;
+      color: rgba(255,255,255,.80);
+      line-height:1.45;
+      font-size:13px;
+    }
+    .guide li{ margin: 8px 0; }
+    .guide strong{ color: rgba(255,255,255,.95); }
+
+    .miniCard{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius: 16px;
+      padding:12px;
+      margin-top:12px;
+    }
+    .miniCard h3{
+      margin:0 0 6px;
+      font-size:13px;
+      letter-spacing:.2px;
+    }
+    .miniCard p{
+      margin:0;
+      font-size:12.5px;
+      color: var(--muted);
+      line-height:1.45;
+    }
+
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,.10);
+      margin: 12px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="topbar">
+      <div class="title">
+        <h1>Job Description (JD) Submission</h1>
+        <p>Submit a hiring-ready JD for HR review and publishing. Please follow the guidelines on the right to ensure clarity and faster approvals.</p>
+      </div>
+      <div class="badge" title="Form standard">
+        <span class="dot"></span>
+        HR Standard • Upload ≤ 5MB
+      </div>
+    </div>
+
+    <div class="layout">
+      <!-- MAIN FORM -->
+      <div class="card">
+        <div class="cardHeader">
+          <div>
+            <h2>JD Form</h2>
+            <div class="sub">Fields marked * are required. Keep content crisp & specific.</div>
+          </div>
+        </div>
+
+        <div class="cardBody">
+          <form id="jdForm" action="/submit-jd" method="POST" enctype="multipart/form-data" novalidate>
+
+            <div class="section">
+              <div class="grid">
+                <div class="field">
+                  <label>Job Title <span class="req">* required</span></label>
+                  <input name="job_title" placeholder="e.g., Senior Backend Engineer" required />
+                  <div class="help">Use a market-standard title. Avoid internal-only names.</div>
+                </div>
+
+                <div class="field">
+                  <label>Department <span class="req">* required</span></label>
+                  <input name="department" placeholder="e.g., Engineering / Sales / HR" required />
+                </div>
+
+                <div class="field">
+                  <label>Employment Type <span class="req">* required</span></label>
+                  <select name="employment_type" required>
+                    <option value="">Select</option>
+                    <option>Full-time</option>
+                    <option>Part-time</option>
+                    <option>Contract</option>
+                    <option>Internship</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label>Job Level</label>
+                  <select name="job_level">
+                    <option value="">Select</option>
+                    <option>Junior</option>
+                    <option>Mid</option>
+                    <option>Senior</option>
+                    <option>Lead</option>
+                    <option>Manager</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label>Work Mode + Location <span class="req">* required</span></label>
+                  <input name="location" placeholder="e.g., Hybrid - Bengaluru / Remote - India" required />
+                  <div class="help">Mention work mode + city/region for better candidate match.</div>
+                </div>
+
+                <div class="field">
+                  <label>Number of Openings <span class="req">* required</span></label>
+                  <input type="number" min="1" name="openings" placeholder="e.g., 2" required />
+                </div>
+
+                <div class="field">
+                  <label>Experience (Years) <span class="req">* required</span></label>
+                  <input type="number" min="0" step="1" name="experience_years" placeholder="e.g., 3" required />
+                  <div class="help">If flexible, mention a range inside JD Summary too.</div>
+                </div>
+
+                <div class="field">
+                  <label>Reporting To</label>
+                  <input name="reporting_to" placeholder="e.g., Engineering Manager / Head of Sales" />
+                </div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="field">
+                <label>
+                  Job Summary <span class="req">* required</span>
+                  <span class="counter" id="sumCounter">0 / 500</span>
+                </label>
+                <textarea id="job_summary" name="job_summary" maxlength="500"
+                  placeholder="2–4 lines: mission of the role, impact, and who they collaborate with."
+                  required></textarea>
+                <div class="help">Write for candidates: what they’ll do, why it matters, and where they fit.</div>
+              </div>
+
+              <div class="split">
+                <div class="field">
+                  <label>
+                    Key Responsibilities <span class="req">* required</span>
+                    <span class="counter" id="respCounter">0 / 1500</span>
+                  </label>
+                  <textarea id="responsibilities" name="responsibilities" maxlength="1500"
+                    placeholder="Use bullet-style lines:
+- Build/own X
+- Collaborate with Y
+- Deliver Z"
+                    required></textarea>
+                  <div class="help">Prefer 6–10 responsibilities. Start each line with an action verb.</div>
+                </div>
+
+                <div class="field">
+                  <label>
+                    Requirements / Must-Have <span class="req">* required</span>
+                    <span class="counter" id="mustCounter">0 / 1200</span>
+                  </label>
+                  <textarea id="must_have" name="must_have" maxlength="1200"
+                    placeholder="List what is truly required:
+- 3+ years in ...
+- Strong in ...
+- Experience with ..."
+                    required></textarea>
+                  <div class="help">Avoid unrealistic “everything” lists. Keep it honest.</div>
+                </div>
+              </div>
+
+              <div class="split" style="margin-top:12px;">
+                <div class="field">
+                  <label>
+                    Skills (Required) <span class="req">* required</span>
+                  </label>
+                  <input name="required_skills" placeholder="e.g., Django, PostgreSQL, AWS, REST APIs" required />
+                  <div class="help">Comma-separated. Aim for 6–12 skill keywords.</div>
+                  <div class="pillRow">
+                    <span class="pill">Be specific</span>
+                    <span class="pill">Use industry terms</span>
+                    <span class="pill">Avoid “etc.”</span>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label>Preferred / Nice-to-Have</label>
+                  <input name="preferred_skills" placeholder="e.g., Redis, Docker, Kubernetes" />
+                  <div class="help">Only add if it helps screen better candidates.</div>
+                </div>
+              </div>
+
+              <div class="split" style="margin-top:12px;">
+                <div class="field">
+                  <label>Education</label>
+                  <input name="education" placeholder="e.g., B.Tech / MCA / Any Graduate (if flexible)" />
+                </div>
+
+                <div class="field">
+                  <label>Certifications (if any)</label>
+                  <input name="certifications" placeholder="e.g., AWS SAA, PMP" />
+                </div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="grid">
+                <div class="field">
+                  <label>Salary Range</label>
+                  <input name="salary_range" placeholder="e.g., ₹10–14 LPA / Negotiable" />
+                  <div class="help">Optional, but helps attract relevant candidates faster.</div>
+                </div>
+
+                <div class="field">
+                  <label>Joining Timeline <span class="req">* required</span></label>
+                  <select name="joining_timeline" required>
+                    <option value="">Select</option>
+                    <option>Immediate</option>
+                    <option>15 Days</option>
+                    <option>30 Days</option>
+                    <option>Flexible</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label>JD Publish Deadline</label>
+                  <input type="date" name="publish_deadline" />
+                  <div class="help">Optional. Helps HR prioritize.</div>
+                </div>
+
+                <div class="field">
+                  <label>Priority</label>
+                  <select name="priority">
+                    <option value="">Select</option>
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                    <option>Critical</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="field">
+                <label>Upload JD File <span class="req">* required</span></label>
+                <div class="uploadBox">
+                  <div class="uploadRow">
+                    <input id="jd_file" type="file" name="jd_file" accept=".pdf,.doc,.docx" required />
+                    <div class="fileMeta">Allowed: PDF/DOC/DOCX • Max: 5MB</div>
+                  </div>
+                  <div class="help">
+                    Tip: Keep JD file clean (no screenshots). Use headings and bullet lists for readability.
+                  </div>
+                </div>
+
+                <div id="fileStatus" class="status"></div>
+              </div>
+
+              <div class="field" style="margin-top:12px;">
+                <label>Internal Notes (HR Only)</label>
+                <textarea name="internal_notes" placeholder="Any special instructions, interview panel preference, shift timings, background checks, etc."></textarea>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="grid">
+                <div class="field">
+                  <label>Requested By (Name) <span class="req">* required</span></label>
+                  <input name="requested_by" placeholder="Your full name" required />
+                </div>
+
+                <div class="field">
+                  <label>Designation</label>
+                  <input name="designation" placeholder="e.g., Team Lead / Manager" />
+                </div>
+
+                <div class="field">
+                  <label>Email <span class="req">* required</span></label>
+                  <input type="email" name="email" placeholder="name@company.com" required />
+                </div>
+
+                <div class="field">
+                  <label>Contact Number</label>
+                  <input name="contact" placeholder="Optional" />
+                </div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <div class="note"><span class="i">i</span>HR will review for clarity, compliance, and publish readiness.</div>
+              <button type="reset" class="btn btnGhost">Reset</button>
+              <button type="submit" class="btn btnPrimary" id="submitBtn">Submit JD</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- INSTRUCTIONS / GUIDE -->
+      <div class="card guide">
+        <div class="cardHeader">
+          <div>
+            <h2>JD Writing Instructions</h2>
+            <div class="sub">Use these to reduce back-and-forth & get faster approvals.</div>
+          </div>
+        </div>
+
+        <div class="cardBody">
+          <ul>
+            <li><strong>Be outcome-focused:</strong> describe what success looks like in 90 days, not just tasks.</li>
+            <li><strong>Use clear structure:</strong> Summary → Responsibilities → Must-have → Nice-to-have.</li>
+            <li><strong>Keep it realistic:</strong> avoid “10 tools + 10 years” for junior/mid roles.</li>
+            <li><strong>Write in action verbs:</strong> Build, Own, Design, Deliver, Collaborate, Improve.</li>
+            <li><strong>Limit responsibilities:</strong> 6–10 crisp bullets. Each bullet = one idea.</li>
+            <li><strong>Skills should be searchable:</strong> use industry terms candidates actually use.</li>
+            <li><strong>Remove biased language:</strong> avoid age/gender-coded phrases; keep inclusive wording.</li>
+            <li><strong>Include constraints:</strong> shift timings, travel needs, weekend support, on-call, etc.</li>
+            <li><strong>Location clarity:</strong> specify Remote/Hybrid/On-site + city/region + time zone if needed.</li>
+            <li><strong>File hygiene:</strong> no images/screenshots; use headings and bullets; keep it skimmable.</li>
+          </ul>
+
+          <div class="divider"></div>
+
+          <div class="miniCard">
+            <h3>Recommended JD Template (Quick)</h3>
+            <p>
+              <strong>Role:</strong> Title, Level, Team • <strong>Location:</strong> Mode + City<br/>
+              <strong>Summary:</strong> 2–4 lines impact statement<br/>
+              <strong>Responsibilities:</strong> 6–10 bullets<br/>
+              <strong>Must-have:</strong> 5–8 bullets (true requirements)<br/>
+              <strong>Nice-to-have:</strong> 3–5 bullets<br/>
+              <strong>Interview signals:</strong> what you’ll assess (optional)
+            </p>
+          </div>
+
+          <div class="miniCard">
+            <h3>Common Issues That Delay Approval</h3>
+            <p>
+              Vague responsibilities (“handle tasks”), missing location/work mode,
+              unrealistic must-haves, no reporting line, or role not aligned with level.
+            </p>
+          </div>
+
+          <div class="miniCard">
+            <h3>Compliance Reminder</h3>
+            <p>
+              Do not include age, gender preference, marital status, or any discriminatory criteria.
+              Keep eligibility based only on role-relevant skills and responsibilities.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Character counters
+    const bindCounter = (textareaId, counterId) => {
+      const el = document.getElementById(textareaId);
+      const counter = document.getElementById(counterId);
+      if (!el || !counter) return;
+      const max = el.getAttribute("maxlength") || "";
+      const update = () => counter.textContent = `${el.value.length} / ${max}`;
+      el.addEventListener("input", update);
+      update();
+    };
+
+    bindCounter("job_summary", "sumCounter");
+    bindCounter("responsibilities", "respCounter");
+    bindCounter("must_have", "mustCounter");
+
+    // File validation (Max 5MB + allowed types)
+    const fileInput = document.getElementById("jd_file");
+    const fileStatus = document.getElementById("fileStatus");
+    const submitBtn = document.getElementById("submitBtn");
+    const MAX_BYTES = 5 * 1024 * 1024; // 5MB
+    const allowedExt = [".pdf", ".doc", ".docx"];
+
+    function setStatus(type, msg){
+      fileStatus.className = "status " + type;
+      fileStatus.textContent = msg;
+    }
+
+    function resetStatus(){
+      fileStatus.className = "status";
+      fileStatus.textContent = "";
+      fileStatus.style.display = "none";
+    }
+
+    function validateFile(){
+      resetStatus();
+      submitBtn.disabled = false;
+
+      const f = fileInput.files && fileInput.files[0];
+      if (!f) return true;
+
+      const name = (f.name || "").toLowerCase();
+      const okExt = allowedExt.some(ext => name.endsWith(ext));
+
+      if (!okExt){
+        fileInput.value = "";
+        setStatus("err", "Invalid file type. Please upload PDF/DOC/DOCX only.");
+        fileStatus.style.display = "block";
+        submitBtn.disabled = true;
+        return false;
+      }
+
+      if (f.size > MAX_BYTES){
+        fileInput.value = "";
+        setStatus("err", "File is larger than 5MB. Please compress or upload a smaller file.");
+        fileStatus.style.display = "block";
+        submitBtn.disabled = true;
+        return false;
+      }
+
+      setStatus("ok", `Looks good: ${f.name} (${Math.ceil(f.size/1024)} KB)`);
+      fileStatus.style.display = "block";
+      return true;
+    }
+
+    fileInput.addEventListener("change", validateFile);
+
+    // Form submit guard
+    document.getElementById("jdForm").addEventListener("submit", (e) => {
+      const ok = validateFile();
+      if (!ok) {
+        e.preventDefault();
+        return;
+      }
+      // Optional: basic HTML5 validity check
+      if (!e.target.checkValidity()) {
+        e.preventDefault();
+        setStatus("err", "Please fill all required fields (*) before submitting.");
+        fileStatus.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>
