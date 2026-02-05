@@ -267,7 +267,13 @@
 
   <script>
     // 👉 Replace with your n8n webhook URL later
-    const WEBHOOK_URL = "https://YOUR_N8N_PUBLIC_URL/webhook/resume-intake";
+    const WEBHOOK_URL = " https://samual-photospectroscopical-flossie.ngrok-free.dev/webhook/resume-intake";
+
+    const JOB_ID = new URLSearchParams(window.location.search).get("job_id") || "";
+
+    if (!JOB_ID) {
+      console.warn("job_id missing in URL");
+    }
 
     const form = document.getElementById("resumeForm");
     const fileInput = document.getElementById("fileInput");
@@ -371,6 +377,8 @@
 
       // Prepare multipart/form-data
       const fd = new FormData(form);
+      fd.append("job_id", JOB_ID);
+
 
       // Basic sanity checks
       const fullName = (fd.get("full_name") || "").toString().trim();
